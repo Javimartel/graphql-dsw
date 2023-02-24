@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="./styles/style.css"> -->
+    <title>API de Productos</title>
+</head>
+
+<body>
+    <h1>API de Productos</h1>
+
+    <h2>Consultar Productos</h2>
+    <button id="btn-get-products">Obtener Productos</button>
+    <div id="products"></div>
+
+    <h2>Añadir Producto</h2>
+    <form id="form-add-product">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price"><br>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock"><br>
+
+        <button type="submit" id="addProduct">Add Product</button>
+
+    </form>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const url = 'http://localhost:4000/graphql';
+
+        // Obtener Productos
+        const btnGetProducts = document.querySelector('#btn-get-products');
+        const productsDiv = document.querySelector('#products');
+
+        btnGetProducts.addEventListener('click', () => {
+            const query = `
+          query {
+            getProducts {
+              id
+              name
+              price
+            }
+          }
+        `;
+
+            axios.post(url, { query })
+                .then(response => {
+                    const products = response.data.data.getProducts;
+                    let html = '';
+                    products.forEach(product => {
+                        html += `
+                <div>
+                  <strong>${product.name}</strong>
+                  <span>${product.price} €</span>
+                </div>
+              `;
+                    });
+                    productsDiv.innerHTML = html;
+                })
+                .catch(error => console.log(error));
+        });
+
+        // Añadir Producto
+        document.querySelector("#addProduct").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            var name = document.querySelector("#name").value;
+            var description = document.querySelector("#description").value;
+            var price = parseFloat(document.querySelector("#price").value);
+            var stock = parseInt(document.querySelector("#stock").value);
+
+            axios.post("http://localhost:4000/graphql", {
+                query: `
+    mutation {
+      addProduct(input: {
+        name: "${name}",
+        description: "${description}",
+        price: ${price},
+        stock: ${stock}
+      }) {
+        id
+        name
+        description
+        price
+        stock
+      }
+    }
+  `
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        });
+
+    </script>
+</body>
+
+</html>

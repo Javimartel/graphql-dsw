@@ -1,6 +1,7 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
+const cors = require('cors');
 
 // Definir los datos de ejemplo
 const products = [
@@ -24,6 +25,13 @@ const products = [
     description: 'Descripción del producto 3',
     price: 20.0,
     stock: 7
+  },
+  {
+    id: 4,
+    name: 'Producto 4',
+    description: 'Producto de prueba 4',
+    price: 5.0,
+    stock: 2
   }
 ];
 
@@ -95,6 +103,9 @@ const root = {
 
 // Crear el servidor GraphQL
 const app = express();
+
+app.use(cors());
+
 app.use('/graphql', graphqlHTTP({
   schema,
   rootValue: root,

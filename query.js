@@ -4,8 +4,10 @@ const url = 'http://localhost:4000/graphql';
 
 const query = `
   query {
-    getProduct(id: 2) {
+    getProducts {
+      id
       name
+      price
     }
   }
 `;
