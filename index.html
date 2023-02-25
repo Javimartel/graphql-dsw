@@ -73,28 +73,23 @@
         document.querySelector("#addProduct").addEventListener("click", function (event) {
             event.preventDefault();
 
-            var name = document.querySelector("#name").value;
-            var description = document.querySelector("#description").value;
-            var price = parseFloat(document.querySelector("#price").value);
-            var stock = parseInt(document.querySelector("#stock").value);
+            let name = document.querySelector("#name").value;
+            let description = document.querySelector("#description").value;
+            let price = parseFloat(document.querySelector("#price").value);
+            let stock = parseInt(document.querySelector("#stock").value);
+
+            console.log(name, description, price, stock)
 
             axios.post("http://localhost:4000/graphql", {
-                query: `
-    mutation {
-      addProduct(input: {
-        name: "${name}",
-        description: "${description}",
-        price: ${price},
-        stock: ${stock}
-      }) {
-        id
-        name
-        description
-        price
-        stock
-      }
-    }
-  `
+                query: `mutation {
+                    addProduct(name: "${name}", description: "${description}", price: ${price}, stock: ${stock}) {
+                      id
+                      name
+                      description
+                      price
+                      stock
+                    }
+                  }`
             }, {
                 headers: {
                     "Content-Type": "application/json"
