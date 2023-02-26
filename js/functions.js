@@ -30,11 +30,11 @@ function showProducts() {
             products.forEach(product => {
                 html += `
         <div class="card" style="width: 15rem; height: 12rem; margin: 1rem;">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <h5 class="card-title">${product.name}</h5>
                 <p class="card-text">${product.description}</p>
+                <p class="card-text"><strong>Precio</strong>: ${product.price} €</p>
 
-                <a href="#" class="card-link" style="text-decoration: none; color: black">${product.price} €</a>
                 <div class="d-flex justify-content-center mt-2">
                     <button class="btn btn-danger button-delete" onclick="eliminarProducto(this.value)" value="${product.id}"><i class="fa-sharp fa-solid fa-trash"></i></button>
                     <button class="btn btn-primary" value="${product.id}" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-solid fa-pen"></i></button>
