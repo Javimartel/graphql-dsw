@@ -38,7 +38,7 @@ function showProducts() {
                 <div class="d-flex justify-content-center mt-2">
                     <button class="btn btn-danger button-delete" onclick="eliminarProducto(this.value)" value="${product.id}"><i class="fa-sharp fa-solid fa-trash"></i></button>
                     <button class="btn btn-primary" value="${product.id}" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-solid fa-pen"></i></button>
-                </div>
+                </div> 
             </div>
         </div>
       `;
