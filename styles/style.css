@@ -41,6 +41,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+  margin-bottom: 10rem;
 }
 
 /* CARD */
