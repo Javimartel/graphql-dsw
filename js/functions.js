@@ -4,13 +4,15 @@ const url = 'http://localhost:4000/graphql';
 const btnGetProducts = document.querySelector('#btn-get-products');
 const productsDiv = document.querySelector('#products');
 
-btnGetProducts.addEventListener('click', showProducts);
+// btnGetProducts.addEventListener('click', showProducts);
+
 
 function showProducts() {
     const query = `
   query {
     getProducts {
       id
+      description
       name
       price
     }
@@ -27,10 +29,17 @@ function showProducts() {
             let html = '';
             products.forEach(product => {
                 html += `
-        <div>
-          <strong>${product.name}</strong>
-          <span>${product.price} €</span>
-          <button onclick="eliminarProducto(this.value)" value="${product.id}">Eliminar</button>
+        <div class="card" style="width: 15rem; height: 12rem; margin: 1rem;">
+            <div class="card-body">
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">${product.description}</p>
+
+                <a href="#" class="card-link" style="text-decoration: none; color: black">${product.price} €</a>
+                <div class="d-flex justify-content-center mt-2">
+                    <button class="btn btn-danger button-delete" onclick="eliminarProducto(this.value)" value="${product.id}"><i class="fa-sharp fa-solid fa-trash"></i></button>
+                    <button class="btn btn-primary" value="${product.id}" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-solid fa-pen"></i></button>
+                </div>
+            </div>
         </div>
       `;
             });
@@ -39,14 +48,19 @@ function showProducts() {
         .catch(error => console.log(error));
 };
 
+
 // Añadir Producto
 document.querySelector("#addProduct").addEventListener("click", function (event) {
-    event.preventDefault();
 
     let name = document.querySelector("#name").value;
     let description = document.querySelector("#description").value;
     let price = parseFloat(document.querySelector("#price").value);
     let stock = parseInt(document.querySelector("#stock").value);
+    let updateForm = document.querySelector("#updateForm");
+
+    updateForm.reset();
+
+
 
     axios.post("http://localhost:4000/graphql", {
         query: `mutation {
@@ -91,3 +105,29 @@ function eliminarProducto(id) {
             console.error(error);
         });
 };
+
+// Update Product
+function updateProduct(id) {
+
+    axios.post("http://localhost:4000/graphql", {
+        query: `mutation {
+            updateProduct(id: ${id})
+            }`
+    }, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            showProducts();
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
+
+
+
+
+/* Show Products */
+showProducts();
