@@ -100,9 +100,9 @@ document.querySelector("#addProduct").addEventListener("click", function (event)
     let description = document.querySelector("#description").value;
     let price = parseFloat(document.querySelector("#price").value);
     let stock = parseInt(document.querySelector("#stock").value);
-    let updateForm = document.querySelector("#updateForm");
+    let addForm = document.querySelector("#addForm");
 
-    updateForm.reset();
+    addForm.reset();
 
     axios.post("http://localhost:4000/graphql", {
         query: `mutation {
